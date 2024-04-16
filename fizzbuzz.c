@@ -17,6 +17,9 @@ static const char *const fmt_table[] = {INT_FMT, FIZZBUZZ_FMT, FIZZBUZZ_FMT,
                                         FIZZBUZZ_FMT};
 
 int main(int argc, char **argv) {
+  int len;
+  size_t bytes;
+  char buf[21];
   uint64_t limit = 100;
   if (argc >= 2) {
     uint64_t parsed;
@@ -27,10 +30,9 @@ int main(int argc, char **argv) {
   for (uint64_t i = 1; i <= limit; i++) {
     uint8_t mask = (uint8_t)((i % 3 == 0) << 1) | (uint8_t)(i % 5 == 0);
     text_table[0] = (char *)i;
-    char buf[21];
-    int len = snprintf(&buf, 21, fmt_table[mask], text_table[mask]);
+    len = snprintf(buf, 21, fmt_table[mask], text_table[mask]);
     assert(len > 0);
-    size_t bytes = fwrite(buf, 1, len, stdout);
+    bytes = fwrite(buf, 1, (size_t)len, stdout);
     assert(bytes == len);
   }
   fflush(stdout);
